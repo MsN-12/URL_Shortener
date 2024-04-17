@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/MsN-12/url_shortener/handler"
+	"github.com/MsN-12/url_shortener/store"
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
@@ -9,6 +13,9 @@ func main() {
 			"message": "pong",
 		})
 	})
+	r.POST("/create-url", handler.CreateShortUrl)
+	r.GET("/:short-url", handler.HandleShortUrlRedirect)
+	store.InitializeStore()
 	err := r.Run(":8080")
 	if err != nil {
 		panic(err)

@@ -33,14 +33,14 @@ func InitializeStore() *StorageService {
 	return storageService
 }
 
-func SaveUrl(shortURL, originalURL, userID string) {
+func SaveUrl(shortURL, originalURL string) {
 	err := storageService.redisClient.Set(ctx, shortURL, originalURL, cacheDuration).Err()
 	if err != nil {
 		panic(err)
 	}
 }
 
-func RetriveUrl(shortURL, userID string) string {
+func RetriveUrl(shortURL string) string {
 	result, err := storageService.redisClient.Get(ctx, shortURL).Result()
 	if err != nil {
 		panic(err)
