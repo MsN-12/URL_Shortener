@@ -20,4 +20,4 @@ This is a URL shortener service created using Go. It provides a simple API to sh
 {
   "long_url": "https://www.example.com"
 }
-- ```
+```
