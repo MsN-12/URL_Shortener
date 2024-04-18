@@ -17,9 +17,16 @@ func CreateShortUrl(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	shortUrl := shortener.GenerateShortURL(request.LongUrl)
-	store.SaveUrl(shortUrl, request.LongUrl)
-	ctx.JSON(http.StatusOK, gin.H{"short_url": shortUrl})
+	for {
+		shortUrl := shortener.GenerateShortURL(request.LongUrl)
+		if store.CheckExistence(shortUrl) {
+			continue
+		} else {
+			store.SaveUrl(shortUrl, request.LongUrl)
+			ctx.JSON(http.StatusOK, gin.H{"short_url": shortUrl})
+			break
+		}
+	}
 }
 func HandleShortUrlRedirect(ctx *gin.Context) {
 	shortUrl := ctx.Param("short-url")

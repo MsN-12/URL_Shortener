@@ -47,3 +47,10 @@ func RetriveUrl(shortURL string) string {
 	}
 	return result
 }
+func CheckExistence(shortURL string) bool {
+	result, err := storageService.redisClient.Exists(ctx, shortURL).Result()
+	if err != nil {
+		panic(err)
+	}
+	return result == 1
+}
