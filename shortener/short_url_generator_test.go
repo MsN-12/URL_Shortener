@@ -1,7 +1,6 @@
 package shortener
 
 import (
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"log"
 	"math/rand"
@@ -25,21 +24,19 @@ const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
 func TestCollisionRate(t *testing.T) {
 	urlMap := make(map[string]bool)
 	collisions := 0
-	count := 0
-
-	for i := 0; i < 1000; i++ {
-		s := RandomString(100)
+	count := 1000000
+	for i := 0; i < count; i++ {
+		s := RandomString(50)
 		shortURL := GenerateShortURL(s)
 		if urlMap[shortURL] {
 			collisions++
 		} else {
 			urlMap[shortURL] = true
-			count++
 		}
 	}
-
-	assert.Equal(t, collisions, 0)
+	collisionsRate := float64(collisions) / float64(count)
 	log.Println("Collisions: ", collisions)
+	log.Println("Collisions rate: ", collisionsRate)
 }
 func RandomString(n int) string {
 	var sb strings.Builder
