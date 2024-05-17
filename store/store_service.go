@@ -39,7 +39,6 @@ func SaveUrl(shortURL, originalURL string) {
 		panic(err)
 	}
 }
-
 func RetriveUrl(shortURL string) string {
 	result, err := storageService.redisClient.Get(ctx, shortURL).Result()
 	if err != nil {

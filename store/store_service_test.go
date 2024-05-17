@@ -5,11 +5,8 @@ import (
 	"testing"
 )
 
-var testStoreService = &StorageService{}
+var testStoreService = InitializeStore()
 
-func init() {
-	testStoreService = InitializeStore()
-}
 func TestInsertAndRetrieve(t *testing.T) {
 	longURL := "https://www.exmple.com/sdafa/asfdasf/asfdas/sadfas/dsafa/asdf/asdf/asdf"
 	shortURL := "XsDfa534sfs"

@@ -14,7 +14,7 @@ func main() {
 		})
 	})
 	r.POST("/create-url", handler.CreateShortUrl)
-	r.GET("/:short-url", handler.HandleShortUrlRedirect)
+	r.GET("/:short-url", handler.RetriveUrl)
 	store.InitializeStore()
 	err := r.Run(":8080")
 	if err != nil {
