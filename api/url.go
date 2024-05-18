@@ -1,4 +1,4 @@
-package handler
+package api
 
 import (
 	"github.com/MsN-12/url_shortener/shortener"
@@ -12,7 +12,7 @@ type CreateShortUrlRequest struct {
 	LongUrl string `json:"long_url"`
 }
 
-func CreateShortUrl(ctx *gin.Context) {
+func (s *Server) CreateShortUrl(ctx *gin.Context) {
 	var request CreateShortUrlRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -34,7 +34,7 @@ type ShortUrlRedirectRequest struct {
 	ShortUrl string `json:"short_url"`
 }
 
-func RetriveUrl(ctx *gin.Context) {
+func (s *Server) RetriveUrl(ctx *gin.Context) {
 	var request ShortUrlRedirectRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
