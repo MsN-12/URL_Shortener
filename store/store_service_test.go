@@ -12,8 +12,8 @@ func TestInsertAndRetrieve(t *testing.T) {
 	shortURL := "XsDfa534sfs"
 
 	SaveUrl(shortURL, longURL)
-	retrivedURL := RetriveUrl(shortURL)
-
+	retrivedURL, err := RetrieveUrl(shortURL)
+	require.NoError(t, err)
 	require.True(t, testStoreService.redisClient != nil)
 	require.Equal(t, retrivedURL, longURL)
 }

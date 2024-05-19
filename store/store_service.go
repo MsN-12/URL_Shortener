@@ -33,23 +33,24 @@ func InitializeStore() *StorageService {
 	return storageService
 }
 
-func SaveUrl(shortURL, originalURL string) {
+func SaveUrl(shortURL, originalURL string) error {
 	err := storageService.redisClient.Set(ctx, shortURL, originalURL, cacheDuration).Err()
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return nil
 }
-func RetriveUrl(shortURL string) string {
+func RetrieveUrl(shortURL string) (string, error) {
 	result, err := storageService.redisClient.Get(ctx, shortURL).Result()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	return result
+	return result, nil
 }
-func CheckExistence(shortURL string) bool {
+func CheckExistence(shortURL string) (bool, error) {
 	result, err := storageService.redisClient.Exists(ctx, shortURL).Result()
 	if err != nil {
-		panic(err)
+		return false, err
 	}
-	return result == 1
+	return result == 1, nil
 }

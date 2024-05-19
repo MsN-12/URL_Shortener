@@ -15,31 +15,49 @@ type CreateShortUrlRequest struct {
 func (s *Server) CreateShortUrl(ctx *gin.Context) {
 	var request CreateShortUrlRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	for {
-		shortUrl := shortener.GenerateShortURL(request.LongUrl)
-		if store.CheckExistence(shortUrl) {
-			continue
-		} else {
-			store.SaveUrl(shortUrl, request.LongUrl)
-			ctx.JSON(http.StatusOK, gin.H{"short_url": shortUrl})
-			break
+	existingShortUrl, err := store.RetrieveUrl(request.LongUrl)
+	if err != nil {
+		if err.Error() == "redis: nil" {
+			for {
+				shortUrl := shortener.GenerateShortURL(request.LongUrl)
+				exists, err := store.CheckExistence(shortUrl)
+				if err != nil {
+					ctx.JSON(http.StatusBadRequest, errorResponse(err))
+					return
+				}
+				if exists {
+					continue
+				} else {
+					err := store.SaveUrl(shortUrl, request.LongUrl)
+					if err != nil {
+						ctx.JSON(http.StatusBadRequest, errorResponse(err))
+						return
+					}
+					ctx.JSON(http.StatusOK, gin.H{"short_url": shortUrl})
+					return
+				}
+			}
 		}
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
 	}
-}
-
-type ShortUrlRedirectRequest struct {
-	ShortUrl string `json:"short_url"`
+	ctx.JSON(http.StatusOK, gin.H{"short_url": existingShortUrl})
+	return
 }
 
 func (s *Server) RetriveUrl(ctx *gin.Context) {
-	var request ShortUrlRedirectRequest
-	if err := ctx.ShouldBindJSON(&request); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	shortUrl, ok := ctx.Params.Get("short-url")
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error:": "invalid url"})
 		return
 	}
-	longUrl := store.RetriveUrl(request.ShortUrl)
+	longUrl, err := store.RetrieveUrl(shortUrl)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
 	ctx.JSON(http.StatusOK, gin.H{"long_url": longUrl})
 }
