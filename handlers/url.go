@@ -1,4 +1,4 @@
-package api
+package handlers
 
 import (
 	"github.com/MsN-12/url_shortener/shortener"
@@ -48,7 +48,7 @@ func (s *Server) CreateShortUrl(ctx *gin.Context) {
 	return
 }
 
-func (s *Server) RetriveUrl(ctx *gin.Context) {
+func (s *Server) RetrieveUrl(ctx *gin.Context) {
 	shortUrl, ok := ctx.Params.Get("short-url")
 	if !ok {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error:": "invalid url"})

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/MsN-12/url_shortener/api"
+	"github.com/MsN-12/url_shortener/handlers"
 	"github.com/MsN-12/url_shortener/store"
 	"log"
 )
@@ -11,11 +11,11 @@ func main() {
 	runGinServer()
 }
 func runGinServer() {
-	server, err := api.NewServer()
+	server, err := handlers.NewServer()
 	if err != nil {
 		log.Fatalln("Error creating server: ", err)
 	}
-	err = server.Start(":8080")
+	err = server.Start(":3000")
 	if err != nil {
 		log.Fatalln("Error starting server: ", err)
 	}
