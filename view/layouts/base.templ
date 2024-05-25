@@ -15,8 +15,10 @@ templ Base() {
         <link rel="stylesheet" href="/public/styles.css"/>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/alpinejs" defer></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
     </head>
-    <body class="antialiased">
+    <body class="antialiased flex-col flex h-screen">
     @components.Navigation()
     { children... }
     </body>
