@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"net/http"
-
 	"github.com/a-h/templ"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -22,7 +20,6 @@ func (s *Server) setupRouter() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	router.StaticFS("/public/", http.Dir("public"))
 	router.POST("/api/create-url", s.CreateShortUrl)
 	router.GET("/:short-url", s.RetrieveUrl)
 
