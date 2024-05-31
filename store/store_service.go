@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const cacheDuration = time.Hour * 3
+const cacheDuration = time.Hour * 6
 
 var (
 	storageService = &StorageService{}

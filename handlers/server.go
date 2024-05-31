@@ -1,9 +1,11 @@
 package handlers
 
 import (
-	"github.com/a-h/templ"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/a-h/templ"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 type Server struct {
@@ -18,13 +20,11 @@ func NewServer() (*Server, error) {
 }
 func (s *Server) setupRouter() {
 	router := gin.Default()
+	router.Use(cors.Default())
 
 	router.StaticFS("/public/", http.Dir("public"))
 	router.POST("/api/create-url", s.CreateShortUrl)
-	router.GET("/api/:short-url", s.RetrieveUrl)
-
-	router.GET("/", s.Home)
-	router.GET("/auth/singup", s.Auth)
+	router.GET("/:short-url", s.RetrieveUrl)
 
 	s.router = router
 
