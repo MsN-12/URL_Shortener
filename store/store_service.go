@@ -18,10 +18,10 @@ type StorageService struct {
 	redisClient *redis.Client
 }
 
-func InitializeStore() *StorageService {
+func InitializeStore(redisAddr string, redisPassword string) *StorageService {
 	redisClient := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
+		Addr:     redisAddr,
+		Password: redisPassword,
 		DB:       0,
 	})
 	pong, err := redisClient.Ping(ctx).Result()
