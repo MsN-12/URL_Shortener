@@ -52,10 +52,15 @@ func (s *Server) RetrieveUrl(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error:": "invalid url"})
 		return
 	}
+	if len(shortUrl) != 8 {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error:": "invalid url"})
+		return
+	}
 	longUrl, err := store.RetrieveUrl(shortUrl)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"long_url": longUrl})
+	//ctx.JSON(http.StatusOK, gin.H{"long_url": longUrl})
+	ctx.Redirect(http.StatusFound, longUrl)
 }

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"github.com/a-h/templ"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -31,11 +30,4 @@ func (s *Server) Start(address string) error {
 }
 func errorResponse(err error) gin.H {
 	return gin.H{"error": err.Error()}
-}
-func Render(ctx *gin.Context, c templ.Component) {
-	err := c.Render(ctx, ctx.Writer)
-	if err != nil {
-		ctx.AbortWithStatusJSON(500, errorResponse(err))
-		return
-	}
 }
