@@ -27,6 +27,6 @@ go run main.go
 ![UI Screenshot](./screenshot.png)
 To start using the UI, navigate to the UI directory and install the necessary dependencies:
 ```bash
-cd UI
+cd SvelteUI
 npm install
 npm run dev -- --open
